@@ -1,5 +1,5 @@
 # Triplet Search
-Contributors: [Ioannis Pappas (USC)](https://scholar.google.co.uk/citations?user=M-zFg4kAAAAJ&hl=en) and [Maytus Piriyajitakonkij (VISTEC)](https://.maytusp.com)
+Contributors: [Ioannis Pappas (USC)](https://scholar.google.co.uk/citations?user=M-zFg4kAAAAJ&hl=en) and [Maytus Piriyajitakonkij (VISTEC)](https://maytusp.com)
 ### Description
 This project is for searching a triplet contained of 3 images (root_img, img_1, img_2) such that
 the similarity between img_1 and img_2 is equal to k1 calculated from the neural responses from the layer 1 
