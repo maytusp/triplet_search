@@ -18,7 +18,7 @@ i.e.,
 Where F and G are the functions that transform input images to the responses of the layer 1 and 2 respectively.
 \
 
-### Pre-requisite
+### Pre-requisites
 1. Install BrainScore from https://github.com/brain-score/brain-score
 2. Install Candidate models from https://github.com/brain-score/candidate_models
 
