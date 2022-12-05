@@ -1,10 +1,6 @@
 # Triplet Search
- 
-### Pre-requisite
-1. Install BrainScore from https://github.com/brain-score/brain-score
-2. Install Candidate models from https://github.com/brain-score/candidate_models
-\
-\
+
+### Description
 This project is for searching a triplet contained of 3 images (root_img, img_1, img_2) such that
 the similarity between img_1 and img_2 is equal to k1 calculated from the neural responses from the layer 1 
 and the similarity between img_1 and img_2 is equal to k2 calculated from the neural responses from the layer 2. \
@@ -21,6 +17,11 @@ i.e.,
 \
 Where F and G are the functions that transform input images to the responses of the layer 1 and 2 respectively.
 \
+
+### Pre-requisite
+1. Install BrainScore from https://github.com/brain-score/brain-score
+2. Install Candidate models from https://github.com/brain-score/candidate_models
+
 
 ### Example
 1. Getting correlation matrices from the layer X of the neural network Y 
