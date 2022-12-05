@@ -24,13 +24,9 @@ Where F and G are the functions that transform input images to the responses of 
 
 1. Getting correlation matrices from the layer X of the neural network Y 
 ```
-{
 python get_corr_mat.py --stim_data_path object_images/*/*.jpg --saved_path corr_mat --use_pca
-}
 ```
 2. Creating triplets
 ```
-{
 python get_triplets.py --upper_corr_path corr_mat/corr_CORnet-s_IT.npy --intermediate_corr_path corr_mat/corr_CORnet-s_V2.npy
-}
 ```
