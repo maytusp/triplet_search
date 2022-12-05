@@ -10,9 +10,9 @@ and root_img and img_2.
 \
 i.e., 
 \
-|corr(F(root_img), F(img_1)) - corr(F(root_img), F(img_2))| = k1 for the layer 1
+|| corr(F(root_img), F(img_1)) - corr(F(root_img), F(img_2)) || = k1 for the layer 1
 \
-|corr(G(root_img), G(img_1)) - corr(G(root_img), G(img_2))| = k2 for the layer 2  
+|| corr(G(root_img), G(img_1)) - corr(G(root_img), G(img_2)) || = k2 for the layer 2  
 \
 \
 Where F and G are the functions that transform input images to the responses of the layer 1 and 2 respectively.
