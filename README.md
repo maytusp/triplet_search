@@ -22,6 +22,7 @@ i.e.,
 Where F and G are the functions that transform input images to the responses of the layer 1 and 2 respectively.
 \
 
+### Example
 1. Getting correlation matrices from the layer X of the neural network Y 
 ```
 python get_corr_mat.py --stim_data_path object_images/*/*.jpg --saved_path corr_mat --use_pca
