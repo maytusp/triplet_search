@@ -92,7 +92,7 @@ def countPairs_new(arr_ori,arr2_ori,n1,n2,k1,k2,error_,ori_, prev_idx):
 
     if len(inter_ind) != 0:
         for i in range(n2_new):
-            if abs((arr2_ori[inter_ind[i]] - arr2_ori[inter2_ind[i]])-k2)<error_:
+            if k2-error_<=abs((arr2_ori[inter_ind[i]] - arr2_ori[inter2_ind[i]]))<=k2+error_:
                 if not(inter_ind[i] in prev_idx) and not(inter2_ind[i] in prev_idx):
                     prev_idx[inter_ind[i]] = True
                     prev_idx[inter2_ind[i]] = True                
