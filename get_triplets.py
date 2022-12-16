@@ -77,11 +77,12 @@ def countPairs_new(arr_ori,arr2_ori,n1,n2,k1,k2,error_,ori_, prev_idx):
         j = i+1
         while j < n1 and  (((arr[j]-arr[i]))<error_+k1):
             if (arr[j]-arr[i]>k1-error_) and ind_s[i] != ori_ and ind_s[j] != ori_:
-                inter_ind.append(ind_s[i])
-                inter2_ind.append(ind_s[j])
-                ind_s1.append(i)
-                ind_s2.append(j)
-                ori_array.append(ori_)
+                if not(ind_s[i] in prev_idx) and not(ind_s[j] in prev_idx):
+                    inter_ind.append(ind_s[i])
+                    inter2_ind.append(ind_s[j])
+                    ind_s1.append(i)
+                    ind_s2.append(j)
+                    ori_array.append(ori_)
             j += 1
 
     # 2nd step. 
@@ -93,12 +94,9 @@ def countPairs_new(arr_ori,arr2_ori,n1,n2,k1,k2,error_,ori_, prev_idx):
     if len(inter_ind) != 0:
         for i in range(n2_new):
             if k2-error_<=abs((arr2_ori[inter_ind[i]] - arr2_ori[inter2_ind[i]]))<=k2+error_:
-                if not(inter_ind[i] in prev_idx) and not(inter2_ind[i] in prev_idx):
-                    prev_idx[inter_ind[i]] = True
-                    prev_idx[inter2_ind[i]] = True                
-                    indarr1_new.append(inter_ind[i])
-                    indarr2_new.append(inter2_ind[i])
-                    ori_array_new.append(ori_array[i])
+                indarr1_new.append(inter_ind[i])
+                indarr2_new.append(inter2_ind[i])
+                ori_array_new.append(ori_array[i])
     else:
         ori_array_new =[]
         indarr1_new =[]
@@ -170,9 +168,10 @@ def check_delta(delta_p1, delta_p2, mat_diff_upper, mat_diff_intermediate, prev_
     keep_mat11_ref_f = []
     keep_mat12_ref_f =[]
 
-
-    ori_mat = np.random.choice(num_images-1, 10, replace=False)
-    ori_ = ori_mat[0]
+    ori_ = np.random.choice(num_images-1, 1, replace=False)[0]
+    # Check if the selected root image is in the previous indices that are used
+    while ori_ in prev_idx:
+        ori_ = np.random.choice(num_images-1, 1, replace=False)[0]
 
     # This is the "root" image
     acc = []
@@ -209,30 +208,43 @@ def check_delta(delta_p1, delta_p2, mat_diff_upper, mat_diff_intermediate, prev_
     if len(keep_pic1_ref) != 0:
         len_img = len(keep_pic1_ref) # = len(keep_mat11_ref) = len(keep_mat12_ref)
         rand_idx = np.random.choice([i for i in range(len_img)])
+        
+        keep_pic1_ref_single = keep_pic1_ref[rand_idx]
+        keep_mat11_ref_single = keep_mat11_ref[rand_idx]
+        keep_mat12_ref_single = keep_mat12_ref[rand_idx]
 
-        keep_pic1_ref = keep_pic1_ref[rand_idx]
-        keep_mat11_ref = keep_mat11_ref[rand_idx]
-        keep_mat12_ref = keep_mat12_ref[rand_idx]
+        # Add image indices to the existing index set
+        # To prevent adding the previous indices that have already been used
+        prev_idx[keep_pic1_ref_single] = True
+        prev_idx[keep_mat11_ref_single] = True
+        prev_idx[keep_mat12_ref_single] = True
 
     else:
 
-        keep_pic1_ref = []
-        keep_mat11_ref = []
-        keep_mat12_ref = []
+        keep_pic1_ref_single = "None"
+        keep_mat11_ref_single = "None"
+        keep_mat12_ref_single = "None"
 
-    return (keep_pic1_ref, keep_mat11_ref, keep_mat12_ref)
+    return (keep_pic1_ref_single, keep_mat11_ref_single, keep_mat12_ref_single)
 
 # num_bins is the number of bins for the layer 1 and layer 2
 
-def generate_triplet_table(mat_diff_upper, mat_diff_intermediate, num_bins=10, bin_size=0.5):
+def generate_triplet_table(mat_diff_upper, mat_diff_intermediate, prev_idx, num_tables=10, num_bins=10, bin_size=0.5):
     triplet_table = {}
-    prev_idx = {}
-    for i1 in range(1, num_bins+1): # Loop over layer1's bins
-        for i2 in range(1, num_bins+1): # Loop over layer2's bins
-            delta_p1 = i1
-            delta_p2 = i2
-            triplet_table[str(i1)+'_'+str(i2)] = check_delta(delta_p1, delta_p2, mat_diff_upper, mat_diff_intermediate,
-                                                        prev_idx, num_bins, bin_size)
+    for table_ in range(1, num_tables+1): # Loop over table sample
+        print("Generate Sample#:", table_)
+        for i1 in range(1, num_bins+1): # Loop over layer1's bins
+            for i2 in range(1, num_bins+1): # Loop over layer2's bins
+                delta_p1 = i1
+                delta_p2 = i2
+                root_img, img_1, img_2 = check_delta(delta_p1, delta_p2, mat_diff_upper, mat_diff_intermediate,
+                                                                        prev_idx, num_bins, bin_size)
+                if root_img != "None" and img_1 != "None" and img_2 != "None":
+                    bin_name = "L1="+str(i1)+"_"+'L2='+str(i2)
+                    if bin_name in triplet_table:
+                        triplet_table[bin_name].append((root_img, img_1, img_2))
+                    else:
+                        triplet_table[bin_name] = [(root_img, img_1, img_2)]
     return triplet_table
             
 def save_triplet_table(saved_path, triplet_table):
@@ -260,19 +272,12 @@ if __name__ == '__main__':
     mat_diff_intermediate = np.load(args.intermediate_corr_path)
 
     create_new_dir(args.triplet_saved_path)
-      
+    prev_idx = {}
 
     #######################
     #### The goal of this program is to find triplets of images (root_, image1, image2) such that abs(corr(root_,image1)-corr(root_,image2)) = k1 for layer 1, and abs(corr(root_,image1)-corr(root_,image2) = k2) for layer 2. In other words, for a random image "root_" we are trying to find two additional images "image1" and "image2" such that their difference in terms of correlation with the root image satisfies a value. The correlation is defined based on the layer 1 correlation matrices, or layer 2 correlations matrices.
     # This external loop will run over all the desired correlation differences for layer 1-these have been clustered in 10 buckets corresponding to different k1 values (see internal function check_delta). Each loop will create different folder. Within each run you will have 10 subfolders. These correspond to 10 desired correlation differences for layer 2 (see internal function check_delta). Thus for each call of this program you will have 10 folders with 10 subfolder each. Each folder will have a triplet file .txt.
-
     #######################
-    for loop_ in range(args.num_loops): 
-
-        loop_saved_dir = os.path.join(args.triplet_saved_path,'run'+str(loop_))
-        
-        create_new_dir(loop_saved_dir)
-
-        triplet_table = generate_triplet_table(mat_diff_upper, mat_diff_intermediate)
-        saved_path = os.path.join(loop_saved_dir, 'triplet_table.pkl')
-        save_triplet_table(saved_path, triplet_table)
+    triplet_table = generate_triplet_table(mat_diff_upper, mat_diff_intermediate, prev_idx, args.num_loops)
+    saved_path = os.path.join(args.triplet_saved_path, 'triplet_table.pkl')
+    save_triplet_table(saved_path, triplet_table)
