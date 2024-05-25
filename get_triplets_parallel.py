@@ -11,6 +11,8 @@ import gc
 import argparse
 import pickle
 import time
+import multiprocessing
+from multiprocessing import Manager
 
 
 # For example
@@ -21,8 +23,8 @@ parser.add_argument('--upper_corr_path', type=str, nargs='?', default='')
 parser.add_argument('--intermediate_corr_path', type=str, nargs='?', default='')
 parser.add_argument('--triplet_saved_path', type=str, nargs='?', default='triplet_table_vgg16')
 parser.add_argument('--num_loops', type=int, nargs='?', default=20)
-
 args = parser.parse_args()
+num_processes = multiprocessing.cpu_count() - 2
 if not(os.path.exists(args.triplet_saved_path)):
     os.makedirs(args.triplet_saved_path)
 
@@ -42,6 +44,45 @@ def print_log(printlog, logger_output=logger_output):
     logger_output.write(printlog + '\n')
     logger_output.flush()
 
+
+def process_chunk(start, end, arr, ind_s, ori_, prev_idx, k1, error_):
+    inter_ind_local = []
+    inter2_ind_local = []
+
+    for i in range(start, end):
+        j = i + 1
+        while j < len(arr) and (((arr[j] - arr[i])) < k1 + error_):
+            if (arr[j] - arr[i] > k1 - error_) and ind_s[i] != ori_ and ind_s[j] != ori_:
+                if not (ind_s[i] in prev_idx) and not (ind_s[j] in prev_idx):
+                    inter_ind_local.append(ind_s[i])
+                    inter2_ind_local.append(ind_s[j])
+            j += 1
+    
+    return inter_ind_local, inter2_ind_local
+
+def parallel_processing(arr, ind_s, ori_, prev_idx, k1, error_):
+    manager = Manager()
+    n1 = len(arr)
+    chunk_size = (n1 + num_processes - 1) // num_processes
+    pool = multiprocessing.Pool(processes=num_processes)
+
+    tasks = []
+    for i in range(0, n1, chunk_size):
+        end = min(i + chunk_size, n1)
+        tasks.append(pool.apply_async(process_chunk, (i, end, arr, ind_s, ori_, prev_idx, k1, error_)))
+
+    pool.close()
+    pool.join()
+
+    inter_ind = []
+    inter2_ind = []
+    for task in tasks:
+        inter_ind_local, inter2_ind_local = task.get()
+        inter_ind.extend(inter_ind_local)
+        inter2_ind.extend(inter2_ind_local)
+
+    return inter_ind, inter2_ind
+
 def countPairs_new(arr_ori, arr2_ori, n1, n2, k1, k2, error_, ori_, prev_idx, delta_p1, delta_p2): 
     #The goal is to find image indices that their difference in correlation with the "root" image is k1 and k2 for layer 1 and layer 2 respectively. 
     #Input: 
@@ -54,9 +95,7 @@ def countPairs_new(arr_ori, arr2_ori, n1, n2, k1, k2, error_, ori_, prev_idx, de
     count =0
     indarr1= []
     indarr2=[]
-    ori_array =[]
     ori_array_new = []
-    ori_array_new1 = []
     ori_array_2 = []
     indarr11 = []
     indarr22 = []
@@ -88,21 +127,7 @@ def countPairs_new(arr_ori, arr2_ori, n1, n2, k1, k2, error_, ori_, prev_idx, de
     # This part reduces search time by limiting maximum samples in the found array
     # limit_samples = 10000
 
-    # print_log(f"{k1-error_}< IT_diff <{k1+error_} and {k2-error_}< V2_diff <{k2+error_}")
-
-    for i in range(n1):
-        j = i+1
-        while j < n1 and (((arr[j]-arr[i]))<k1+error_):
-            if (arr[j]-arr[i]>k1-error_) and ind_s[i] != ori_ and ind_s[j] != ori_:
-                if not(ind_s[i] in prev_idx) and not(ind_s[j] in prev_idx):
-                    inter_ind.append(ind_s[i])
-                    inter2_ind.append(ind_s[j])
-                    ind_s1.append(i)
-                    ind_s2.append(j)
-                    ori_array.append(ori_)
-            j += 1
-        # if len(inter_ind) >= limit_samples:
-        #     break
+    inter_ind, inter2_ind = parallel_processing(arr, ind_s, ori_, prev_idx, k1, error_)
     # print_log(f"indices for k1: {len(inter_ind)} samples")
     # 2nd step. 
     # Out of these indices, select those that their correlation difference in layer 2 is k2 (within error).
@@ -125,7 +150,7 @@ def countPairs_new(arr_ori, arr2_ori, n1, n2, k1, k2, error_, ori_, prev_idx, de
             if condition:
                 indarr1_new.append(inter_ind[i])
                 indarr2_new.append(inter2_ind[i])
-                ori_array_new.append(ori_array[i])
+        ori_array_new.append(ori_)
 
                 # diff_upper(root, im1, im2) = upper_corr(root,im2) - upper_corr(root,im1) always > 0
                 # We want diff_intermediate(root, im1, im2) = inter_corr(root,im2) - inter_corr(root,im1) 
@@ -290,7 +315,9 @@ def generate_triplet_table(mat_diff_upper, mat_diff_intermediate, prev_idx, num_
                     else:
                         triplet_table[bin_name] = [(root_img, img_1, img_2)]
         dur = time.time() - start_time
-        # print_log(f"tabel# {table_} takes {dur}")
+        saved_path = os.path.join(args.triplet_saved_path, f'triplet_table_{table_}.pkl')
+        save_triplet_table(saved_path, triplet_table)
+        print_log(f"tabel# {table_} takes {dur}")
     return triplet_table
             
 def save_triplet_table(saved_path, triplet_table):
@@ -314,6 +341,7 @@ if __name__ == '__main__':
     #The main driver function. All you need is the two correlation matrices for layer 1 and layer 2. 
     #The way to call this function is python get_triplets_public_part1.py RANDOMNUMBER where RANDOMNUMBER can be any number. This basically creates separate folders with the root directory name corresponding to RANDOMNUMBER (I did this because I am running this script multiple times).
 
+    print_log(f"num_processes=: {num_processes}")
     # Load the correlation matrices for the two layers from VGG. These were derived by inputting about 26,000 images through a pretrained VGG-16 neural network and extracting features at each layer (see separate code for more information).
     mat_diff_upper = np.load(args.upper_corr_path)
     mat_diff_intermediate = np.load(args.intermediate_corr_path)
