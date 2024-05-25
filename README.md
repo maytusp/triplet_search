@@ -39,7 +39,8 @@ Note that --filename_order_path is to check whether the new correlation matrix i
 
 After running "get_corr_mat.py" for 2 layers (such as features.43 and features.27 of vgg-16), it will return corr_vgg-16_features.{idx}.npy which is to fed into the triplet search script below.
 
-2. Creating triplets from corr_mat_{IT_layer}.npy and corr_mat_{V2_layer}.npy
+2. Search for triplets
+   
 Here we use IT_layer as features.43 and V2_layer as features.27 of VGG-16 (No need to be IT and V2, it can be any arbitrary layers)
 ```
 python get_triplets_parallel.py --triplet_saved_path triplet_vgg16_IT_f43_V2_f27 --upper_corr_path corr_vgg-16_features.43.npy --intermediate_corr_path corr_vgg-16_features.27.npy --num_loops 20
