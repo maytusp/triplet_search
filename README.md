@@ -31,8 +31,11 @@ If you want to add new neural network models, you may want to compute their Brai
 ### Example
 1. Getting correlation matrices from the layer X of the neural network Y 
 ```
-python get_corr_mat.py --stim_data_path object_images/*/*.jpg --saved_path corr_mat --use_pca
+python get_corr_mat.py --model_name vgg-16 --selected_layer features.43 --stim_data_path ./images/ --saved_path ./corr_mat/ --filename_order_path filenames.npy
 ```
+
+Note that --filename_order_path is to check whether the new correlation matrix is align with the previous image orders. If you extract correlation matrix for the first time you do not need to use this, the script will return filenames_{model_name}_{layer_name}.npy which contains the ordered images from index1 to indexN, where N is the number of images in your "images" folder.
+
 2. Creating triplets
 ```
 python get_triplets.py --upper_corr_path corr_mat/corr_CORnet-s_IT.npy --intermediate_corr_path corr_mat/corr_CORnet-s_V2.npy
