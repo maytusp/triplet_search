@@ -22,8 +22,10 @@ Where F and G are the functions that transform input images to the responses of 
 1. Pytorch 2.x (This is for get_corr_mat.py, you can use your own script to get correlation of model layers)
 
 If you want to add new neural network models, you may want to compute their Brain-Score to select the most suitable layers for predicitng neural responses.
+
 3. (Optional) Install BrainScore from https://github.com/brain-score/brain-score
-4. (Optional) Install Candidate models from https://github.com/brain-score/candidate_models
+4. 
+5. (Optional) Install Candidate models from https://github.com/brain-score/candidate_models
 
 
 ### Example
