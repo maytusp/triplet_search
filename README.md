@@ -23,9 +23,9 @@ Where F and G are the functions that transform input images to the responses of 
 
 If you want to add new neural network models, you may want to compute their Brain-Score to select the most suitable layers for predicitng neural responses.
 
-3. (Optional) Install BrainScore from https://github.com/brain-score/brain-score
-4. 
-5. (Optional) Install Candidate models from https://github.com/brain-score/candidate_models
+2. (Optional) Install BrainScore from https://github.com/brain-score/brain-score
+
+3. (Optional) Install Candidate models from https://github.com/brain-score/candidate_models
 
 
 ### Example
