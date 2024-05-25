@@ -36,7 +36,11 @@ python get_corr_mat.py --model_name vgg-16 --selected_layer features.43 --stim_d
 
 Note that --filename_order_path is to check whether the new correlation matrix is align with the previous image orders. If you extract correlation matrix for the first time you do not need to use this, the script will return filenames_{model_name}_{layer_name}.npy which contains the ordered images from index1 to indexN, where N is the number of images in your "images" folder.
 
-2. Creating triplets
+
+After running "get_corr_mat.py" for 2 layers (such as features.43 and features.27 of vgg-16), it will return corr_vgg-16_features.{idx}.npy which is to fed into the triplet search script below.
+
+2. Creating triplets from corr_mat_{IT_layer}.npy and corr_mat_{V2_layer}.npy
+Here we use IT_layer as features.43 and V2_layer as features.27 of VGG-16 (No need to be IT and V2, it can be any arbitrary layers)
 ```
-python get_triplets.py --upper_corr_path corr_mat/corr_CORnet-s_IT.npy --intermediate_corr_path corr_mat/corr_CORnet-s_V2.npy
+python get_triplets_parallel.py --triplet_saved_path triplet_vgg16_IT_f43_V2_f27 --upper_corr_path corr_vgg-16_features.43.npy --intermediate_corr_path corr_vgg-16_features.27.npy --num_loops 20
 ```
