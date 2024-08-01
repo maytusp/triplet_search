@@ -140,7 +140,7 @@ if __name__ == "__main__":
     parser.add_argument('--upper_corr_path', type=str, nargs='?', default='')
     parser.add_argument('--intermediate_corr_path', type=str, nargs='?', default='')
     parser.add_argument('--triplet_path', type=str, nargs='?', default='triplet_table.pkl')
-    parser.add_argument('--image_names_path', type=str, nargs='?', default='triplet_table.pkl')
+    parser.add_argument('--image_names_path', type=str, nargs='?', default='filenames.npy') # filenames.npy maps from corr_mat idx to image name
     parser.add_argument('--saved_path', type=str, nargs='?', default='reports/report_vgg16_IT_f43_V2_f27_20_samples')
 
 
