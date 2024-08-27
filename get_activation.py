@@ -85,7 +85,8 @@ def model_activation(model, model_name, layer_name, dataset_dir, batch_size, dev
     for i, (images, labels, paths) in enumerate(test_loader):
         print(f"{(i+1) * batch_size} processed files")
         images = images.to(device)
-        outputs = model(images)
+        with torch.no_grad():
+            outputs = model(images)
         activation.append(activation_dict[layer_name].detach().cpu())
         for path in paths:
             fn = os.path.basename(path)
