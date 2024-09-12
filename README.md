@@ -1,4 +1,6 @@
-![Cognitive Task: Which image is similar to the root image?](task.png)
+![](task.png)
+The baby (image2) is more high-level similar to the face (root). However, the hat (image1) is more low-level similar to the face.
+High-level and low-level similarity are computed by FC3 and Pool3 layers in VGG16.
 
 This repository is the official code of
 [What makes a face looks like a hat: Decoupling low-level and high-level Visual Properties with Image Triplets](https://arxiv.org/abs/2409.02241).
