@@ -1,7 +1,8 @@
 # Triplet Search
 Contributors: [Ioannis Pappas (USC)](https://scholar.google.co.uk/citations?user=M-zFg4kAAAAJ&hl=en) and [Maytus Piriyajitakonkij (UofManchester and A*STAR)](https://maytusp.com)
 
-### Update: This work is accepted at Workshop on Human-Inspired Computer Vision at ECCV 2024, Milan
+### Update: 
+This work is accepted at Workshop on Human-Inspired Computer Vision at ECCV 2024, Milan
 
 ### Description
 The code is for creating a triplet contained of 3 images (root_img, img_1, img_2) such that
