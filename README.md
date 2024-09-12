@@ -1,7 +1,7 @@
 This repository is the official code of
 [What makes a face looks like a hat: Decoupling low-level and high-level Visual Properties with Image Triplets](https://arxiv.org/abs/2409.02241).
 
-This work is accepted at Workshop on Human-Inspired Computer Vision at ECCV 2024, Milan
+This work is accepted at **Workshop on Human-Inspired Computer Vision at ECCV 2024**, Milan, Italy.
 The camera-ready version is coming soon.
 
 ### Description
