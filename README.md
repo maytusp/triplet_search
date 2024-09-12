@@ -55,6 +55,6 @@ python get_triplets_parallel.py --triplet_saved_path triplet_vgg16_IT_f43_V2_f27
 
 If you use any parts of this repository, please consider cite us
 
-
+<div style="border: 1px solid #007BFF; padding: 10px; background-color: #E3F2FD; color: #0056b3;">
 Piriyajitakonkij, Maytus, Sirawaj Itthipuripat, Ian Ballard, and Ioannis Pappas. "What makes a face looks like a hat: Decoupling low-level and high-level Visual Properties with Image Triplets." arXiv preprint arXiv:2409.02241 (2024).
-
+</div>
