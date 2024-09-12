@@ -7,25 +7,12 @@ This work is accepted at **Workshop on Human-Inspired Computer Vision at ECCV 20
 The camera-ready version is coming soon.
 
 ### Description
-The code is for creating a triplet contained of 3 images (root_img, img_1, img_2) such that
-the similarity between img_1 and img_2 is equal to k1 calculated from the neural responses from the layer 1 
-and the similarity between img_1 and img_2 is equal to k2 calculated from the neural responses from the layer 2. \
-The similarity score is between img_1 and img_2 is calculated from the difference in the correlation of neural responses between root_img and img_1
-and the correlation of neural responses between root_img and img_2. 
-\
-\
-i.e., 
-\
-|| corr(F(root_img), F(img_1)) - corr(F(root_img), F(img_2)) || = k1 for the layer 1
-\
-|| corr(G(root_img), G(img_1)) - corr(G(root_img), G(img_2)) || = k2 for the layer 2  
-\
-\
-Where F and G are the functions that transform input images to the responses of the layer 1 and 2 respectively.
-\
+The goal of this project is to decorrelate low-level and high-level similarity of images.
 
 ***For example***, the baby (image2) is more high-level similar to the face (root). However, the hat (image1) is more low-level similar to the face.
 High-level and low-level similarity are computed by FC3 and Pool3 layers in VGG16.
+
+Please read the paper for the full details of (dis)similarity definitions and the pseudocode for generating a set of triplets.
 
 ### Pre-requisites
 1. Pytorch 2.x (This is for get_corr_mat.py, you can use your own script to get correlation of model layers)
