@@ -3,7 +3,7 @@ Contributors: [Ioannis Pappas (USC)](https://scholar.google.co.uk/citations?user
 
 ### Update: 
 This work is accepted at Workshop on Human-Inspired Computer Vision at ECCV 2024, Milan
-Preprint-version: [https://arxiv.org/abs/2409.02241][https://arxiv.org/abs/2409.02241]
+Preprint-version: [https://arxiv.org/abs/2409.02241](https://arxiv.org/abs/2409.02241)
 The camera-ready version is coming soon.
 
 ### Description
