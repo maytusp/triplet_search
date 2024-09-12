@@ -1,5 +1,8 @@
 # Triplet Search
 Contributors: [Ioannis Pappas (USC)](https://scholar.google.co.uk/citations?user=M-zFg4kAAAAJ&hl=en) and [Maytus Piriyajitakonkij (UofManchester and A*STAR)](https://maytusp.com)
+
+### Update: This work is accepted at Workshop on Human-Inspired Computer Vision at ECCV 2024, Milan
+
 ### Description
 The code is for creating a triplet contained of 3 images (root_img, img_1, img_2) such that
 the similarity between img_1 and img_2 is equal to k1 calculated from the neural responses from the layer 1 
@@ -44,4 +47,11 @@ After running "get_corr_mat.py" for 2 layers (such as features.43 and features.2
 Here we use IT_layer as features.43 and V2_layer as features.27 of VGG-16 (No need to be IT and V2, it can be any arbitrary layers)
 ```
 python get_triplets_parallel.py --triplet_saved_path triplet_vgg16_IT_f43_V2_f27 --upper_corr_path corr_vgg-16_features.43.npy --intermediate_corr_path corr_vgg-16_features.27.npy --num_loops 20
+```
+
+
+If you use any parts of this repository, please consider cite us
+
+```
+Piriyajitakonkij, Maytus, Sirawaj Itthipuripat, Ian Ballard, and Ioannis Pappas. "What makes a face looks like a hat: Decoupling low-level and high-level Visual Properties with Image Triplets." arXiv preprint arXiv:2409.02241 (2024).
 ```
