@@ -1,3 +1,5 @@
+![Cognitive Task: Which image is similar to the root image?](task.png)
+
 This repository is the official code of
 [What makes a face looks like a hat: Decoupling low-level and high-level Visual Properties with Image Triplets](https://arxiv.org/abs/2409.02241).
 
