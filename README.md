@@ -1,4 +1,5 @@
 ![](task.png)
+
 The baby (image2) is more high-level similar to the face (root). However, the hat (image1) is more low-level similar to the face.
 High-level and low-level similarity are computed by FC3 and Pool3 layers in VGG16.
 
