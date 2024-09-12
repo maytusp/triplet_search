@@ -1,9 +1,7 @@
-# Triplet Search
-Contributors: [Ioannis Pappas (USC)](https://scholar.google.co.uk/citations?user=M-zFg4kAAAAJ&hl=en) and [Maytus Piriyajitakonkij (UofManchester and A*STAR)](https://maytusp.com)
+This repository is the official code of
+[What makes a face looks like a hat: Decoupling low-level and high-level Visual Properties with Image Triplets](https://arxiv.org/abs/2409.02241).
 
-### Update: 
 This work is accepted at Workshop on Human-Inspired Computer Vision at ECCV 2024, Milan
-Preprint-version: [What makes a face looks like a hat: Decoupling low-level and high-level Visual Properties with Image Triplets](https://arxiv.org/abs/2409.02241)
 The camera-ready version is coming soon.
 
 ### Description
