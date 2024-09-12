@@ -9,7 +9,7 @@ The camera-ready version is coming soon.
 ### Description
 The goal of this project is to decorrelate low-level and high-level similarity of images.
 
-***For example***, the baby (image2) is more high-level similar to the face (root). However, the hat (image1) is more low-level similar to the face.
+***For example***, considering the triplet of images above, the baby (image2) is more high-level similar to the face (root). However, the hat (image1) is more low-level similar to the face.
 High-level and low-level similarity are computed by FC3 and Pool3 layers in VGG16.
 
 Please read the paper for the full details of (dis)similarity definitions and the pseudocode for generating a set of triplets.
